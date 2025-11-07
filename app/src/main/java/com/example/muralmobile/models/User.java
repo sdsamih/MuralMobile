@@ -1,4 +1,4 @@
-package com.example.muralmobile;
+package com.example.muralmobile.models;
 
 public class User {
     private String id;

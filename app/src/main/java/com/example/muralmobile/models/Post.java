@@ -14,21 +14,21 @@ public class Post {
     private List<Like> likes;
     private User user;
     private String topComment;
-    private _count count;
+    private Count _count;
 
-    public _count getCount() {
-        return count;
+    public Count getCount() {
+        return _count;
     }
 
     public int getLikes(){
-        return this.count.getLikes();
+        return this._count.getLikes();
     }
     public int getComments(){
-        return this.count.getComments();
+        return this._count.getComments();
     }
 
-    public void setCount(_count count) {
-        this.count = count;
+    public void setCount(Count count) {
+        this._count = count;
     }
 
     public String getTopComment() {
@@ -56,6 +56,8 @@ public class Post {
                 ", isVideo=" + isVideo +
                 ", likes=" + likes +
                 ", user=" + user +
+                ", topComment='" + topComment + '\'' +
+                ", _count=" + _count.toString() +
                 '}';
     }
 

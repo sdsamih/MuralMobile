@@ -1,6 +1,6 @@
 package com.example.muralmobile.models;
 
-public class _count {
+public class Count {
 
     private int likes;
     private int comments;
@@ -27,5 +27,13 @@ public class _count {
 
     public void addComment(){
         this.comments++;
+    }
+
+    @Override
+    public String toString() {
+        return "Count{" +
+                "likes=" + likes +
+                ", comments=" + comments +
+                '}';
     }
 }

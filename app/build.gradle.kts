@@ -42,6 +42,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.squareup.okhttp3:okhttp:5.2.1")
 
+    implementation("com.squareup.picasso:picasso:2.8")
+
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.recyclerview)

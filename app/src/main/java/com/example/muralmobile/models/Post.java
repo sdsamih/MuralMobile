@@ -73,14 +73,6 @@ public class Post {
         this.caption = caption;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Boolean getPublic() {
         return isPublic;
     }

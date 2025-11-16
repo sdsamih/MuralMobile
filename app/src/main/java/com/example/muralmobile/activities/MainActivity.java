@@ -2,7 +2,6 @@ package com.example.muralmobile.activities;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +17,8 @@ import com.example.muralmobile.models.PostResponse;
 import com.example.muralmobile.R;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
-import com.example.muralmobile.utils.Adapter;
-import com.google.gson.Gson;
+import com.example.muralmobile.utils.AdapterPosts;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +30,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private ApiService apiService;
     private RecyclerView recyclerView;
-    private Adapter adapter;
+    private AdapterPosts adapterPosts;
     private ArrayList<Post> posts;
     private int currentPage = 1;
     private boolean isLoading = false;
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ApiService.class); //Instância do Retrofit
 
         posts = new ArrayList<Post>(); //Lista de posts carregados no feed
-        adapter = new Adapter( posts, this);
+        adapterPosts = new AdapterPosts( posts, this);
 
         fetchPosts(currentPage);
 
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapterPosts);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() { //Listener para saber quando chegou no fim do recycler
             @Override
@@ -104,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     posts.addAll(newPosts);
-                    adapter.notifyDataSetChanged(); //Atualizar adapter do feed
+                    adapterPosts.notifyDataSetChanged(); //Atualizar adapter do feed
                 }
                 else {
                     Log.e("MainActivity", "Resposta não bem-sucedida: " + response.code());

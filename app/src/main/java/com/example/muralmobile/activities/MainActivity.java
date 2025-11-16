@@ -31,12 +31,13 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    //JUST TESTING
     private ApiService apiService;
     private RecyclerView recyclerView;
     private Adapter adapter;
     private ArrayList<Post> posts;
+    private int currentPage = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,73 +49,73 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        apiService = RetrofitClient.getClient().create(ApiService.class);
-        System.out.println("VAI FETCH::\n\n\n\n\n\n");
-        posts = new ArrayList<>();
-        adapter = new Adapter( posts, this);
-        fetchPosts();
-        System.out.println("no main: " + posts.toString());
+        apiService = RetrofitClient.getClient().create(ApiService.class); //Instância do Retrofit
 
-        recyclerView = findViewById(R.id.recyclerViewMain);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        posts = new ArrayList<Post>(); //Lista de posts carregados no feed
+        adapter = new Adapter( posts, this);
+
+        fetchPosts(currentPage);
+
+        recyclerView = findViewById(R.id.recyclerViewMain); //recyclerview do feed principal
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        System.out.println("ADAPTER ");
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() { //Listener para saber quando chegou no fim do recycler
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int itensVisiveis = layoutManager.getChildCount();
+                int itensTotais = layoutManager.getItemCount();
+                int primeiroItemVisivel = layoutManager.findFirstVisibleItemPosition();
+
+
+                if (!isLoading && !isLastPage) { // Se não estiver carregando e não for última página
+
+                    // Chegou no fim da lista?
+                    if ((itensVisiveis + primeiroItemVisivel) >= itensTotais && primeiroItemVisivel >= 0){ //se chegar no fim da lista e já tiver carregado o primeiro
+                        currentPage++;
+                        fetchPosts(currentPage);
+                    }
+                }
+            }
+        });
     }
 
-    private ArrayList<Post> fetchPosts(){
-//        System.out.println("AQUI: "+apiService..toString());
-        ArrayList<Post> postsToReturn = new ArrayList<>();
-        Call<PostResponse> call = apiService.getAllPosts();
-        System.out.println("DEPOIS: \n\n\n\n"+call.request().url());
+    private void fetchPosts(int pagina){
+
+        if(isLoading){ return;} //Se chamar enquanto tá carregando, não fazer nada
+        isLoading=true;
+
+        Call<PostResponse> call = apiService.getPostsPage(pagina); //Chamada do endpoint /posts com paginação
+
         call.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                isLoading= false;
 
                 if (response.isSuccessful()) {
-                    System.out.println("RESPONDEU");
-                    System.out.println("-------------");
-                    System.out.println(response.body().getData().get(0).toString());
-                    System.out.println(response.body().getData().toString());
-                    System.out.println("-------------");
-                    System.out.println(call.request().url());
-                    posts.addAll(response.body().getData());
-                    adapter.notifyDataSetChanged();
-//                    String result = response.body().toString();
-//                    System.out.println("RESULT: " + result);
-//                    Log.d("MainActivity", result);
-//                    Gson gson = new Gson();
-//
-//                    PostResponse responseContent = gson.fromJson(result, PostResponse.class);
-//
-//                    List<Post> posts = responseContent.getData();
-//
-//                    StringBuilder builder = new StringBuilder();
-//                    for (Post post:posts){
-//                        builder.append(post.getCaption()).append("\n");
-//                    }
-//
-//                    runOnUiThread(() -> {
-//                        TextView textView = findViewById(R.id.txt_main);
-//                        textView.setText(builder.toString());
-//                    });
-//
+                    List<Post> newPosts = (List<Post>) response.body().getData();
+
+                    if (newPosts == null || newPosts.isEmpty()) {
+                        isLastPage = true; // Rolou todos posts
+                        return;
+                    }
+                    posts.addAll(newPosts);
+                    adapter.notifyDataSetChanged(); //Atualizar adapter do feed
                 }
                 else {
-                    System.out.println("RESPOSTA NÃO FOI SUCESSFUL\n\n\n\n\n\n");
                     Log.e("MainActivity", "Resposta não bem-sucedida: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
-                System.out.println("FALHOU\n\n\n\n\n");
                 System.out.println(t.toString());
             }
         });
-        System.out.println("Final da função: " + postsToReturn.toString());
-        System.out.println("outro: " + posts.toString());
-        return postsToReturn;
     }
 
 }

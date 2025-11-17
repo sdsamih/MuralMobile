@@ -20,6 +20,10 @@ public class Post {
         return _count;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public int getLikes(){
         return this._count.getLikes();
     }

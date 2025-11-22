@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MuralMobile">
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

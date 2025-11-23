@@ -50,8 +50,8 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         holder.topComment.setText(post.getTopComment());
 
         // IMAGEM DO POST
-        String postPictureUrl = post.getImageUrl();
-//                RetrofitClient.getUrlBase() + "posts/download/" + post.getId();
+        String postPictureUrl =
+                post.getImageUrl();
 
         System.out.println("post picture url: "+ postPictureUrl);
         Picasso.get()

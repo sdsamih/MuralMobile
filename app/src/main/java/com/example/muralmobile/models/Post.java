@@ -1,124 +1,38 @@
 package com.example.muralmobile.models;
 
-import java.util.Date;
+import com.example.muralmobile.services.ApiService;
+import com.example.muralmobile.services.RetrofitClient;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Post {
     private String id;
     private String caption;
-    private String imageUrl;
-    private Boolean isPublic;
-    private Date createdAt;
-    private Date updatedAt;
-    private Boolean isVideo;
+    private boolean _public;
+    private String createdAt;
+    private String updatedAt;
+    private String userId;
+    private List<Midia> Media;
     private List<Like> likes;
     private User user;
-    private String topComment;
     private Count _count;
 
-    public Count getCount() {
-        return _count;
-    }
-
-    public int getLikes(){
-        return this._count.getLikes();
-    }
-    public int getComments(){
-        return this._count.getComments();
-    }
-
-    public void setCount(Count count) {
-        this._count = count;
-    }
-
-    public String getTopComment() {
-        return topComment;
-    }
-
-    public void setTopComment(String topComment) {
-        this.topComment = topComment;
-    }
-
-    public String getCaption() {
-        return caption;
-    }
+    public String getId() { return id; }
+    public String getCaption() { return caption; }
+    public boolean isPublic() { return _public; }
+    public String getCreatedAt() { return createdAt; }
+    public String getUpdatedAt() { return updatedAt; }
+    public String getUserId() { return userId; }
+    public List<Midia> getMidia() { return Media; }
+    public List<Like> getLikesArr() { return likes; }
+    public int getLikes() { return _count.getLikes(); }
+    public User getUser() { return user; }
+    public Count getCount() { return _count; }
 
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id='" + id + '\'' +
-                ", caption='" + caption + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", isPublic=" + isPublic +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", isVideo=" + isVideo +
-                ", likes=" + likes +
-                ", user=" + user +
-                ", topComment='" + topComment + '\'' +
-                ", _count=" + _count.toString() +
-                '}';
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
-
-    public Boolean getPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(Boolean aPublic) {
-        isPublic = aPublic;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Boolean getVideo() {
-        return isVideo;
-    }
-
-    public void setVideo(Boolean video) {
-        isVideo = video;
-    }
-
-    public List<Like> getLikesList() {
-        return likes;
-    }
-
-    public void setLikesList(List<Like> likes) {
-        this.likes = likes;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
-

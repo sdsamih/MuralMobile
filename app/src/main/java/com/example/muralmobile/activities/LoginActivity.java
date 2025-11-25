@@ -13,13 +13,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.muralmobile.R;
+import com.example.muralmobile.activities.signup.SignUpActivity;
 import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
 import com.google.android.material.textfield.TextInputEditText;
-
-import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;

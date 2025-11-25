@@ -4,6 +4,8 @@ import com.example.muralmobile.models.PostResponse;
 import com.example.muralmobile.models.User;
 import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
+import com.example.muralmobile.models.signup.SignUpRequest;
+import com.example.muralmobile.models.signup.SignUpResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +26,7 @@ public interface ApiService {
     @POST("auths/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
+    @Headers("Content-Type: application/json")
+    @POST("users")
+    Call<SignUpResponse> signup(@Body SignUpRequest  signUpRequest);
 }

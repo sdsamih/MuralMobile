@@ -15,14 +15,14 @@
         android:theme="@style/Theme.MuralMobile"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".activities.SignUpPasswordActivity"
+            android:name=".activities.signup.SignUpPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.signup.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

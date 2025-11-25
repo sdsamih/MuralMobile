@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignUpActivity">
+    tools:context=".activities.signup.SignUpActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
@@ -20,6 +20,7 @@
         app:hintTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_subtitleCreate"
         app:layout_constraintVertical_bias="0.0">
@@ -29,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:hint="Name" />
+            android:hint="Name"
+            android:inputType="text|textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,6 +48,7 @@
         app:hintTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.0">
@@ -55,7 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:hint="Email" />
+            android:hint="Email"
+            android:inputType="text|textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,9 +96,9 @@
     <TextView
         android:id="@+id/text_subtitleCreate"
         android:layout_width="342dp"
-        android:layout_height="52dp"
+        android:layout_height="48dp"
         android:fontFamily="@font/roboto"
-        android:text="To begin creating an account, add your name and email. You can change the name any time."
+        android:text="To begin creating your account, add your name and email."
         android:textAlignment="textStart"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

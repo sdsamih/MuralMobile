@@ -1,4 +1,4 @@
-package com.example.muralmobile.activities;
+package com.example.muralmobile.activities.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
         button_back = findViewById(R.id.button_back);
 
         button_next.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), SignUpPasswordActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, SignUpPasswordActivity.class);
             startActivity(intent);
         });
 

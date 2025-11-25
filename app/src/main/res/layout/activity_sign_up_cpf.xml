@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.signup.SignUpPasswordActivity">
+    tools:context=".activities.signup.SignUpCPFActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
@@ -21,68 +21,40 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_subtitlePassword"
-        app:layout_constraintVertical_bias="0.021">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:hint="Password"
-            android:inputType="text|textPassword" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:padding="7dp"
-        app:boxCornerRadiusBottomEnd="15dp"
-        app:boxCornerRadiusBottomStart="15dp"
-        app:boxCornerRadiusTopEnd="15dp"
-        app:boxCornerRadiusTopStart="15dp"
-        app:boxStrokeColor="@color/blue"
-        app:hintTextColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/text_subtitleCPF"
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_confirmPassword"
+            android:id="@+id/input_cpf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:hint="Confirm Password"
-            android:inputType="text|textPassword"
-            app:textInputLayoutFocusedRectEnabled="false" />
+            android:hint="CPF"
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button_next"
+        android:id="@+id/button_createAccount"
         android:layout_width="394dp"
         android:layout_height="55dp"
         android:backgroundTint="@color/blue"
         android:fontFamily="@font/roboto"
-        android:text="Next"
+        android:text="Done"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_titlePassword"
+        android:id="@+id/text_titleCPF"
         android:layout_width="173dp"
         android:layout_height="29dp"
         android:fontFamily="@font/roboto"
-        android:text="Create a password"
+        android:text="Verify your identity"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,18 +65,18 @@
         app:layout_constraintVertical_bias="0.045" />
 
     <TextView
-        android:id="@+id/text_subtitlePassword"
-        android:layout_width="348dp"
-        android:layout_height="61dp"
+        android:id="@+id/text_subtitleCPF"
+        android:layout_width="343dp"
+        android:layout_height="29dp"
         android:fontFamily="@font/roboto"
-        android:text="Create a password with at least 6 letters or numbers. It should be something others can't guess"
+        android:text="To complete your account, add your CPF."
         android:textAlignment="textStart"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_titlePassword"
+        app:layout_constraintTop_toBottomOf="@+id/text_titleCPF"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton

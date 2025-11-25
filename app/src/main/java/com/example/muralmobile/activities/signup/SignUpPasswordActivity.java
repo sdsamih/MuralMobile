@@ -1,5 +1,6 @@
-package com.example.muralmobile.activities;
+package com.example.muralmobile.activities.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import com.example.muralmobile.R;
 
 public class SignUpPasswordActivity extends AppCompatActivity {
     private ImageButton button_back;
+    private Button button_next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,14 @@ public class SignUpPasswordActivity extends AppCompatActivity {
             return insets;
         });
 
+
+        button_next = findViewById(R.id.button_next);
         button_back = findViewById(R.id.button_back);
+
+        button_next.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUpPasswordActivity.this, SignUpCPFActivity.class);
+            startActivity(intent);
+        });
 
         button_back.setOnClickListener(v -> {
             getOnBackPressedDispatcher().onBackPressed();

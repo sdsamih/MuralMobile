@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,9 @@ public class SignUpCPFActivity extends AppCompatActivity {
     private Button button_next;
     private ImageButton button_back;
     private TextInputEditText input_cpf;
+    private String name;
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,13 @@ public class SignUpCPFActivity extends AppCompatActivity {
             return insets;
         });
 
+        Intent receivedIntent = getIntent();
+        if (receivedIntent != null) {
+            email = receivedIntent.getStringExtra("EMAIL");
+            name = receivedIntent.getStringExtra("NAME");
+            password = receivedIntent.getStringExtra("PASSWORD");
+        }
+
         input_cpf = findViewById(R.id.input_cpf);
         button_next = findViewById(R.id.button_createAccount);
         button_back = findViewById(R.id.button_back);
@@ -43,6 +54,12 @@ public class SignUpCPFActivity extends AppCompatActivity {
         button_next.setOnClickListener(v -> {
             String cpfMask = input_cpf.getText().toString().trim();
             String cpf = Mask.unmask(cpfMask);
+
+            if(cpf.isEmpty()) {
+                input_cpf.setError("CPF is required!");
+                input_cpf.requestFocus();
+                return;
+            }
 
             if(cpf.length() < 11) {
                 input_cpf.setError("Incomplete CPF");
@@ -55,6 +72,8 @@ public class SignUpCPFActivity extends AppCompatActivity {
                 input_cpf.requestFocus();
                 return;
             }
+
+            Toast.makeText(SignUpCPFActivity.this, "Account created successfully! (not yet)", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(SignUpCPFActivity.this, LoginActivity.class);
             startActivity(intent);

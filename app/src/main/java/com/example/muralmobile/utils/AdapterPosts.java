@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,12 +47,12 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
 
         holder.TVposterName.setText(post.getUser().getName());
         holder.TVlikes.setText(String.valueOf(post.getLikes()));
-        holder.TVcommentsNumber.setText(String.valueOf(post.getComments()));
-        holder.topComment.setText(post.getTopComment());
+        holder.TVcommentsNumber.setText(String.valueOf(post.getCount().getComments()));
+//        holder.topComment.setText(post.get);
 
         // IMAGEM DO POST
         String postPictureUrl =
-                post.getImageUrl();
+                post.getMidia().get(0).getImageUrl();
 
         System.out.println("post picture url: "+ postPictureUrl);
         Picasso.get()
@@ -65,40 +66,44 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         //IMAGEM DO USUÁRIO
         String userId = post.getUser().getId();
 
-        RetrofitClient.getClient()
-                .create(ApiService.class)
-                .getUserById(userId)
-                .enqueue(new retrofit2.Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+        String avatarUrl = post.getUser().getAvatarUrl();
 
-                        if (response.isSuccessful() && response.body() != null) {
+        Picasso.get()
+                .load(avatarUrl)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .fit()
+                .centerCrop()
+                .into(holder.userImageProfile);
 
-                            User user = response.body();
-                            String avatarUrl = user.getAvatarUrl();
-                            System.out.println(avatarUrl);
 
-                            if (avatarUrl != null) {
+        //função botão de like
+        holder.imageButtonLike.setOnClickListener(v -> {
 
-                                Picasso.get()
-                                        .load(avatarUrl)
-                                        .placeholder(R.drawable.ic_launcher_background)
-                                        .error(R.drawable.ic_launcher_foreground)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(holder.userImageProfile);
+            ApiService api = RetrofitClient.getClient().create(ApiService.class);
 
-                            } else {
-                                holder.userImageProfile.setImageResource(R.drawable.ic_launcher_foreground);
-                            }
-                        }
-                    }
+            UtilFunctions.likePost(api, post.getId(), new UtilFunctions.LikeCallback() {
+                @Override
+                public void onSuccess() {
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        holder.userImageProfile.setImageResource(R.drawable.ic_launcher_foreground);
-                    }
-                });
+                    // Atualiza contagem local
+                    int newLikes = post.getCount().getLikes() + 1;
+                    post.getCount().setLikes(newLikes);
+
+                    // Atualiza UI
+                    holder.TVlikes.setText(String.valueOf(newLikes));
+
+                    // Troca o ícone
+                    holder.imageButtonLike.setImageResource(R.drawable.red_heart); // coloque seu coração preenchido
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Erro ao dar like: " + error);
+                }
+            });
+        });
+
     }
 
     @Override
@@ -114,6 +119,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         private TextView TVlikes;
         private TextView TVcommentsNumber;
         private TextView topComment;
+        private ImageButton imageButtonLike;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +130,8 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             TVposterName = itemView.findViewById(R.id.textViewUserProfile);
             TVlikes = itemView.findViewById(R.id.textViewLikes);
             topComment = itemView.findViewById(R.id.textViewTopComment);
+
+            imageButtonLike = itemView.findViewById(R.id.imageButtonLikes);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

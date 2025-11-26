@@ -29,15 +29,10 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         button_next = findViewById(R.id.button_next);
-        button_back = findViewById(R.id.button_back);
 
         button_next.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), SignUpPasswordActivity.class);
             startActivity(intent);
-        });
-
-        button_back.setOnClickListener(v -> {
-            getOnBackPressedDispatcher().onBackPressed();
         });
     }
 }

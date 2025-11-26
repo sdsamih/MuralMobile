@@ -26,10 +26,5 @@ public class SignUpPasswordActivity extends AppCompatActivity {
             return insets;
         });
 
-        button_back = findViewById(R.id.button_back);
-
-        button_back.setOnClickListener(v -> {
-            getOnBackPressedDispatcher().onBackPressed();
-        });
     }
 }

@@ -43,7 +43,7 @@ public class UtilFunctions {
 
         //insira aqui o token se quiser testar a função de like:
         //(quando faz login, é retornado um token de acesso (accessToken), é só colar ele no lugar dentro do metodo createToken logo abaixo
-        String token = createToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFucG9uaW9wYXJxdWVzQGdtYWlsLmNvbSIsInN1YiI6ImNkZWU3MmY4LWUyOTYtNDZlNy1iM2Y3LTY3NTQ5ZWUyMDdlZSIsImlhdCI6MTc2NDI3MjAxMCwiZXhwIjo0OTIwMDMyMDEwfQ.7IGCoZ8FroVc4dQz9bLpZzuYlltHm5MmRAy9YyYcp5w");
+        String token = createToken("seu token");
         apiService.likePost(postId, token )
                 .enqueue(new Callback<Like>() {
                     @Override
@@ -90,7 +90,7 @@ public class UtilFunctions {
             LikedCallback callback
     ) {
         //aqui tem que pegar do shared preferences
-        String token = createToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFucG9uaW9wYXJxdWVzQGdtYWlsLmNvbSIsInN1YiI6ImNkZWU3MmY4LWUyOTYtNDZlNy1iM2Y3LTY3NTQ5ZWUyMDdlZSIsImlhdCI6MTc2NDI3MjAxMCwiZXhwIjo0OTIwMDMyMDEwfQ.7IGCoZ8FroVc4dQz9bLpZzuYlltHm5MmRAy9YyYcp5w");
+        String token = createToken("seu token");
 
         apiService.isLiked(postId, token)
                 .enqueue(new Callback<Like>() {

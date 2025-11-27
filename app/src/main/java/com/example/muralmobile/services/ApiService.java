@@ -33,4 +33,10 @@ public interface ApiService {
             @Header("Authorization") String bearerToken
     );
 
+    @GET("posts/{id}/liked")
+    Call<Like> isLiked(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken
+    );
+
 }

@@ -77,10 +77,29 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                 .into(holder.userImageProfile);
 
 
+        ApiService api = RetrofitClient.getClient().create(ApiService.class);
+
+        UtilFunctions.isPostLiked(api, post.getId(), new UtilFunctions.LikedCallback() {
+            @Override
+            public void onResult(boolean isLiked) {
+                if (isLiked) {
+                    holder.imageButtonLike.setImageResource(R.drawable.red_heart);
+                } else {
+                    holder.imageButtonLike.setImageResource(R.drawable.heart);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Erro ao verificar like: " + error);
+                holder.imageButtonLike.setImageResource(R.drawable.heart);
+            }
+        });
+
         //função botão de like
         holder.imageButtonLike.setOnClickListener(v -> {
 
-            ApiService api = RetrofitClient.getClient().create(ApiService.class);
+//            ApiService api = RetrofitClient.getClient().create(ApiService.class);
 
             UtilFunctions.likePost(api, post.getId(), new UtilFunctions.LikeCallback() {
                 @Override

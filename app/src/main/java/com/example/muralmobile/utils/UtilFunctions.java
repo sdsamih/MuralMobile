@@ -43,7 +43,7 @@ public class UtilFunctions {
 
         //insira aqui o token se quiser testar a função de like:
         //(quando faz login, é retornado um token de acesso (accessToken), é só colar ele no lugar dentro do metodo createToken logo abaixo
-        String token = createToken(" ");
+        String token = createToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFucG9uaW9wYXJxdWVzQGdtYWlsLmNvbSIsInN1YiI6ImNkZWU3MmY4LWUyOTYtNDZlNy1iM2Y3LTY3NTQ5ZWUyMDdlZSIsImlhdCI6MTc2NDI3MjAxMCwiZXhwIjo0OTIwMDMyMDEwfQ.7IGCoZ8FroVc4dQz9bLpZzuYlltHm5MmRAy9YyYcp5w");
         apiService.likePost(postId, token )
                 .enqueue(new Callback<Like>() {
                     @Override
@@ -77,6 +77,47 @@ public class UtilFunctions {
 
     public static String createToken(String token){
         return "Bearer " + token;
+    }
+
+    public interface LikedCallback {
+        void onResult(boolean isLiked);
+        void onError(String error);
+    }
+
+    public static void isPostLiked(
+            ApiService apiService,
+            String postId,
+            LikedCallback callback
+    ) {
+        //aqui tem que pegar do shared preferences
+        String token = createToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFucG9uaW9wYXJxdWVzQGdtYWlsLmNvbSIsInN1YiI6ImNkZWU3MmY4LWUyOTYtNDZlNy1iM2Y3LTY3NTQ5ZWUyMDdlZSIsImlhdCI6MTc2NDI3MjAxMCwiZXhwIjo0OTIwMDMyMDEwfQ.7IGCoZ8FroVc4dQz9bLpZzuYlltHm5MmRAy9YyYcp5w");
+
+        apiService.isLiked(postId, token)
+                .enqueue(new Callback<Like>() {
+                    @Override
+                    public void onResponse(Call<Like> call, Response<Like> response) {
+
+                        if (response.isSuccessful()) {
+
+                            // Se vier um objeto Like → usuário já curtiu
+                            if (response.body() != null) {
+                                callback.onResult(true); // já deu like
+                            } else {
+                                callback.onResult(false); // nunca deu like
+                            }
+
+                        } else if (response.code() == 404) {
+                            callback.onResult(false); // não curtido
+                        } else {
+                            callback.onError("Erro HTTP: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Like> call, Throwable t) {
+                        callback.onError(t.getMessage());
+                    }
+                });
     }
 
 }

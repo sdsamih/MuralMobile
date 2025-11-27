@@ -17,6 +17,7 @@ import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.w3c.dom.Text;
@@ -83,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                             LoginResponse resp = response.body();
                             if (resp != null) {
                                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "No response data received", Toast.LENGTH_SHORT).show();
                             }
@@ -120,5 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
+
+
     }
 }

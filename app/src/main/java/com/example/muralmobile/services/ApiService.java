@@ -37,4 +37,10 @@ public interface ApiService {
     @POST("auths/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
+    @GET("posts/{id}/liked")
+    Call<Like> isLiked(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken
+    );
+
 }

@@ -1,5 +1,6 @@
 package com.example.muralmobile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast; // Import Toast
@@ -13,6 +14,7 @@ import com.example.muralmobile.models.PostResponse;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
 import com.example.muralmobile.utils.AdapterPosts;
+import com.example.muralmobile.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SessionManager sessionManager = new SessionManager(this);
+        if(!sessionManager.isLoggedIn()){
+            Toast.makeText(this, "Faça login", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        Toast.makeText(this, "Bem-vindo " + sessionManager.getUserName(), Toast.LENGTH_SHORT).show();
+
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
         posts = new ArrayList<Post>();

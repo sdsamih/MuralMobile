@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                             sessionManager.saveSession(name,email,sub,token);
 
                             if (resp != null) {
-                                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();

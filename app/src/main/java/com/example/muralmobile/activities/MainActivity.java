@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 int primeiroItemVisivel = layoutManager.findFirstVisibleItemPosition();
 
                 if (!isLoading && !isLastPage) {
-                    if ((itensVisiveis + primeiroItemVisivel) >= itensTotais && primeiroItemVisivel >= 0){
+                    if ((itensVisiveis + primeiroItemVisivel) >= itensTotais - 3 && primeiroItemVisivel >= 0){
                         currentPage++;
                         fetchPosts(currentPage);
                     }

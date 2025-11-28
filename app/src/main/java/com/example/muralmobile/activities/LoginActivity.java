@@ -17,6 +17,7 @@ import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
+import com.example.muralmobile.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -81,7 +82,17 @@ public class LoginActivity extends AppCompatActivity {
                         button_login.setText("Log in");
                         button_login.setEnabled(true);
                         if (response.isSuccessful()) {
+                            SessionManager sessionManager = new SessionManager(LoginActivity.this);
+
                             LoginResponse resp = response.body();
+
+                            String name = "Fulano";
+                            String email = resp.getEmail();
+                            String sub = resp.getSub();
+                            String token = resp.getAccessToken();
+
+                            sessionManager.saveSession(name,email,sub,token);
+
                             if (resp != null) {
                                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -2,6 +2,7 @@ package com.example.muralmobile.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -115,4 +116,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void seeComments(View view) {
+//        Intent
+    }
 }

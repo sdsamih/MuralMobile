@@ -113,7 +113,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                     holder.TVlikes.setText(String.valueOf(newLikes));
 
                     // Troca o ícone
-                    holder.imageButtonLike.setImageResource(R.drawable.red_heart); // coloque seu coração preenchido
+                    holder.imageButtonLike.setImageResource(R.drawable.red_heart);
                 }
 
                 @Override

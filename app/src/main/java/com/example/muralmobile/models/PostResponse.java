@@ -1,4 +1,7 @@
 package com.example.muralmobile.models;
+import com.example.muralmobile.models.Post;
+
+
 
 import java.util.List;
 

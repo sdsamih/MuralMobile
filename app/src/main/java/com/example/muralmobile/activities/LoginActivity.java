@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                             String sub = resp.getSub();
                             String token = resp.getAccessToken();
 
-                            sessionManager.saveSession(name,email,sub,token);
+                            sessionManager.saveSession(name,sub,email,token);
 
                             if (resp != null) {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

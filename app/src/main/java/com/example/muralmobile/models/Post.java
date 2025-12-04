@@ -1,14 +1,6 @@
 package com.example.muralmobile.models;
 
-import com.example.muralmobile.services.ApiService;
-import com.example.muralmobile.services.RetrofitClient;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Post {
     private String id;
@@ -21,6 +13,8 @@ public class Post {
     private List<Like> likes;
     private User user;
     private Count _count;
+    private boolean isLiked;
+
 
     public String getId() { return id; }
     public String getCaption() { return caption; }
@@ -33,6 +27,14 @@ public class Post {
     public int getLikes() { return _count.getLikes(); }
     public User getUser() { return user; }
     public Count getCount() { return _count; }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
 
 
 }

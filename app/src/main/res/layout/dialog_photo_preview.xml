@@ -11,13 +11,20 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:scaleType="centerCrop"
-        android:contentDescription="teste"/>
+        android:contentDescription="Photo preview"/>
 
-    <TextView
+    <EditText
+        android:id="@+id/caption_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="teste"
-        android:textAlignment="center"
+        android:hint="Legenda"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enviar"
         android:layout_marginTop="8dp"/>
 
 </LinearLayout>

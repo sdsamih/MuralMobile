@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_post) {
-                Toast.makeText(MainActivity.this, "postar", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, CreatePostActivity.class);
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 Toast.makeText(MainActivity.this, "perfil", Toast.LENGTH_SHORT).show();

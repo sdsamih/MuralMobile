@@ -1,5 +1,6 @@
 package com.example.muralmobile.activities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.muralmobile.R;
+import com.example.muralmobile.services.ApiService;
+import com.example.muralmobile.services.RetrofitClient;
+import com.example.muralmobile.utils.SessionManager;
+
+import java.io.ByteArrayOutputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PhotoPreviewDialogFragment extends DialogFragment {
 
@@ -56,7 +69,44 @@ public class PhotoPreviewDialogFragment extends DialogFragment {
 
         sendButton.setOnClickListener(v -> {
             String caption = captionEditText.getText().toString();
-            Toast.makeText(getContext(), "Legenda: " + caption, Toast.LENGTH_SHORT).show();
+
+            SessionManager sessionManager = new SessionManager(getContext());
+            String authToken = sessionManager.getToken();
+
+            if (authToken == null) {
+                Toast.makeText(getContext(), "Authentication token not found.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            RequestBody captionBody = RequestBody.create(MediaType.parse("text/plain"), caption);
+            RequestBody publicBody = RequestBody.create(MediaType.parse("text/plain"), "true");
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), byteArray);
+            MultipartBody.Part mediaPart = MultipartBody.Part.createFormData("media", "image.png", requestFile);
+
+            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+            Call<Void> call = apiService.createPost("Bearer " + authToken, captionBody, publicBody, mediaPart);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Post created successfully!", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "Failed to create post.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

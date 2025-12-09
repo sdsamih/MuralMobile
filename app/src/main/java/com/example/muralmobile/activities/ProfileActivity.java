@@ -138,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
         isLoading=true;
         System.out.println("pagina: "+pagina);
         System.out.println("userId: "+userId);
-        Call<PostResponse> call = apiService.getPostsPage(userId);
+        Call<PostResponse> call = apiService.getPostsPage(pagina, userId);
         call.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {

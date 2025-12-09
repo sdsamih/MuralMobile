@@ -31,6 +31,7 @@ public interface ApiService {
 
     @GET("posts")
     Call<PostResponse> getPostsPage(
+            @Query("page") int page,
             @Query("userId") String userId);
 
     @GET("users/{id}")

@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 Toast.makeText(MainActivity.this, "perfil", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
                 return true;
             }
             return false;

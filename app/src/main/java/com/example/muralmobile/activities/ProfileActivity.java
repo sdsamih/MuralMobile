@@ -1,5 +1,8 @@
 package com.example.muralmobile.activities;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,6 +94,10 @@ public class ProfileActivity extends AppCompatActivity {
                 int itensTotais = layoutManager.getItemCount();
                 int primeiroItemVisivel = layoutManager.findFirstVisibleItemPosition();
 
+//                if(dx > 0)
+//                    findViewById(R.id.profile_header).setVisibility(GONE);
+//                else
+//                    findViewById(R.id.profile_header).setVisibility(VISIBLE);
                 if (!isLoading && !isLastPage) {
                     if ((itensVisiveis + primeiroItemVisivel) >= itensTotais - 3 && primeiroItemVisivel >= 0){
                         currentPage++;
@@ -142,14 +149,28 @@ public class ProfileActivity extends AppCompatActivity {
                         isLastPage = true;
                         return;
                     }
+                    System.out.println("posts: "+newPosts);
+                    newPosts = treatPostsToMatchUser(newPosts, userId);
+                    System.out.println("userId: " +userId);
+                    System.out.println("AGORA posts: "+newPosts);
                     posts.addAll(newPosts);
-                    System.out.println("posts: "+ posts.toString());
                     adapterPosts.notifyDataSetChanged();
                 }
                 else {
                     Log.e("MainActivity", "Resposta não bem-sucedida: " + response.code());
                 }
             }
+
+            private List<Post> treatPostsToMatchUser(List<Post> newPosts, String userId) {
+                List<Post> userPosts = new ArrayList<>();
+                for(Post i: newPosts){
+                    if(i.getUserId().equals(userId)){
+                        userPosts.add(i);
+                    }
+                }
+                return userPosts;
+            }
+
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {

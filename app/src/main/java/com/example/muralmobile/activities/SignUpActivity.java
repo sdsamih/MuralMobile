@@ -12,10 +12,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.muralmobile.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class SignUpActivity extends AppCompatActivity {
     private Button button_next;
     private ImageButton button_back;
+    private TextInputEditText inputName;
+    private TextInputEditText inputEmail;
+    private TextInputEditText inputCpf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +32,20 @@ public class SignUpActivity extends AppCompatActivity {
             return insets;
         });
 
+        inputName = findViewById(R.id.input_name);
+        inputEmail = findViewById(R.id.input_email);
+        inputCpf = findViewById(R.id.input_cpf);
         button_next = findViewById(R.id.button_next);
 
         button_next.setOnClickListener(v -> {
+            String name = inputName.getText().toString();
+            String email = inputEmail.getText().toString();
+            String cpf = inputCpf.getText().toString();
+
             Intent intent = new Intent(getApplicationContext(), SignUpPasswordActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("email", email);
+            intent.putExtra("cpf", cpf);
             startActivity(intent);
         });
     }

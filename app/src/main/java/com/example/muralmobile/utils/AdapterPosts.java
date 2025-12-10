@@ -132,9 +132,6 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                                 }
                             });
                             return true;
-                        } else if (itemId == R.id.option_2) {
-                            Toast.makeText(context, "Opção 2 escolhida", Toast.LENGTH_SHORT).show();
-                            return true;
                         }
                         return false;
                     });

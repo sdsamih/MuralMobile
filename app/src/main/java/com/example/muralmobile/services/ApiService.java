@@ -8,6 +8,7 @@ import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -70,5 +71,9 @@ public interface ApiService {
             @Path("id") String postId,
             @Header("Authorization") String bearerToken
     );
+
+    @Headers("Content-Type: application/json")
+    @POST("users")
+    Call<User> createUser(@Body Map<String, String> userRequest);
 
 }

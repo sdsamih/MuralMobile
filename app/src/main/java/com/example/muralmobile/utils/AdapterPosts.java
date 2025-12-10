@@ -14,9 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.muralmobile.R;
+import com.example.muralmobile.activities.ExpandCommentsDialog;
 import com.example.muralmobile.activities.LoginActivity;
 import com.example.muralmobile.models.Like;
 import com.example.muralmobile.models.Post;
@@ -182,6 +184,14 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             holder.TVlikes.setText(String.valueOf(post.getLikes()));
         });
 
+        holder.imageButtonComments.setOnClickListener(v -> {
+            if (context instanceof AppCompatActivity) {
+                AppCompatActivity activity = (AppCompatActivity) context;
+                ExpandCommentsDialog dialog = new ExpandCommentsDialog();
+                dialog.show(activity.getSupportFragmentManager(), "expand_comments_dialog");
+            }
+        });
+
     }
 
     @Override
@@ -198,6 +208,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         private TextView TVcommentsNumber;
         private TextView topComment;
         private ImageButton imageButtonLike;
+        private ImageButton imageButtonComments;
         private ImageButton buttonMenu;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -210,6 +221,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             TVlikes = itemView.findViewById(R.id.textViewLikes);
             topComment = itemView.findViewById(R.id.textViewTopComment);
             imageButtonLike = itemView.findViewById(R.id.imageButtonLikes);
+            imageButtonComments = itemView.findViewById(R.id.imageButtonComments);
             buttonMenu = itemView.findViewById(R.id.buttonMenu);
         }
     }

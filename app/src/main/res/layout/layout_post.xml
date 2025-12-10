@@ -7,10 +7,9 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <ImageView
@@ -26,10 +25,23 @@
             android:id="@+id/textViewUserProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imageViewUserProfile"
+            android:layout_centerVertical="true"
             android:text="Usuário"
             android:textStyle="bold"
             android:textSize="16sp" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/buttonMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </RelativeLayout>
 
 
     <ImageView

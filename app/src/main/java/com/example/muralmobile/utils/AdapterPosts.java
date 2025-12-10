@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,15 +88,12 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             boolean isLikedByCurrentUser = false;
 
             if (post.getLikesArr() != null) {
-                StringBuilder likesLog = new StringBuilder();
                 for (Like like : post.getLikesArr()) {
-                    Log.d("AdapterPosts", "Usuario: " + currentUserId + " comparado:" + like.getUserId());
-                    likesLog.append("userId: ").append(like.getUserId()).append(", ");
                     if (like.getUserId().equals(currentUserId)) {
                         isLikedByCurrentUser = true;
+                        break;
                     }
                 }
-                Log.d("AdapterPosts", "Likes do post " + post.getId() + ": " + likesLog.toString());
             }
 
             post.setLiked(isLikedByCurrentUser);
@@ -104,9 +103,50 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             } else {
                 holder.imageButtonLike.setImageResource(R.drawable.heart);
             }
+
+            if (post.getUser().getId().equals(currentUserId)) {
+                holder.buttonMenu.setVisibility(View.VISIBLE);
+                holder.buttonMenu.setOnClickListener(v -> {
+                    PopupMenu popup = new PopupMenu(context, v);
+                    popup.getMenuInflater().inflate(R.menu.post_options_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(item -> {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_delete) {
+                            Call<Void> deleteCall = api.deletePost(post.getId(), bearerToken);
+                            deleteCall.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        posts.remove(position);
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, posts.size());
+                                        Toast.makeText(context, "Post excluído com sucesso", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Erro ao excluir o post", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(context, "Erro ao excluir o post", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            return true;
+                        } else if (itemId == R.id.option_2) {
+                            Toast.makeText(context, "Opção 2 escolhida", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        return false;
+                    });
+                    popup.show();
+                });
+            } else {
+                holder.buttonMenu.setVisibility(View.GONE);
+            }
         } else {
             post.setLiked(false);
             holder.imageButtonLike.setImageResource(R.drawable.heart);
+            holder.buttonMenu.setVisibility(View.GONE);
         }
 
         holder.imageButtonLike.setOnClickListener(v -> {
@@ -125,7 +165,6 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                 unlikeCall.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d("DESCURTINDO", response.toString());
                     }
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) { }
@@ -138,7 +177,6 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                 likeCall.enqueue(new Callback<Like>() {
                     @Override
                     public void onResponse(Call<Like> call, Response<Like> response) {
-                        Log.d("CURTINDO", response.toString());
                     }
                     @Override
                     public void onFailure(Call<Like> call, Throwable t) { }
@@ -163,6 +201,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         private TextView TVcommentsNumber;
         private TextView topComment;
         private ImageButton imageButtonLike;
+        private ImageButton buttonMenu;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -173,21 +212,8 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             TVposterName = itemView.findViewById(R.id.textViewUserProfile);
             TVlikes = itemView.findViewById(R.id.textViewLikes);
             topComment = itemView.findViewById(R.id.textViewTopComment);
-
             imageButtonLike = itemView.findViewById(R.id.imageButtonLikes);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return false;
-                }
-            });
+            buttonMenu = itemView.findViewById(R.id.buttonMenu);
         }
     }
 }

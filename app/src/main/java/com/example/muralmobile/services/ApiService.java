@@ -65,4 +65,10 @@ public interface ApiService {
             @Part MultipartBody.Part media
     );
 
+    @DELETE("posts/{id}")
+    Call<Void> deletePost(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken
+    );
+
 }

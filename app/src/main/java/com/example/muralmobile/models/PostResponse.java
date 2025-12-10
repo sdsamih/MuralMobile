@@ -15,4 +15,11 @@ public class PostResponse {
     public void setData(List<Post> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "PostResponse{" +
+                "data=" + data +
+                '}';
+    }
 }

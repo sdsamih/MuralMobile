@@ -15,6 +15,22 @@ public class Post {
     private Count _count;
     private boolean isLiked;
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", caption='" + caption + '\'' +
+                ", _public=" + _public +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", userId='" + userId + '\'' +
+                ", Media=" + Media +
+                ", likes=" + likes +
+                ", user=" + user +
+                ", _count=" + _count +
+                ", isLiked=" + isLiked +
+                '}';
+    }
 
     public String getId() { return id; }
     public String getCaption() { return caption; }

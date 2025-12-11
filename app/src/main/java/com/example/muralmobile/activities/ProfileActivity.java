@@ -94,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
                 int itensTotais = layoutManager.getItemCount();
                 int primeiroItemVisivel = layoutManager.findFirstVisibleItemPosition();
 
-//                if(dx > 0)
+//                if(dy > 0)
 //                    findViewById(R.id.profile_header).setVisibility(GONE);
 //                else
 //                    findViewById(R.id.profile_header).setVisibility(VISIBLE);

@@ -36,8 +36,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.userName.setText(comment.getUser().getName());
         holder.commentContent.setText(comment.getContent());
 
-        // User avatar can be loaded here with Picasso or Glide
-        Picasso.get().load(comment.getUser().getAvatarUrl()).into(holder.userImage);
+        String avatarUrl = comment.getUser().getAvatarUrl();
+
+        Picasso.get()
+                .load(avatarUrl)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .fit()
+                .centerCrop()
+                .into(holder.userImage);
     }
 
     @Override

@@ -262,7 +262,6 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             TVcommentsNumber = itemView.findViewById(R.id.textViewCommentsN);
             TVposterName = itemView.findViewById(R.id.textViewUserProfile);
             TVlikes = itemView.findViewById(R.id.textViewLikes);
-            topComment = itemView.findViewById(R.id.textViewTopComment);
             imageButtonLike = itemView.findViewById(R.id.imageButtonLikes);
             imageButtonComments = itemView.findViewById(R.id.imageButtonComments);
             buttonMenu = itemView.findViewById(R.id.buttonMenu);

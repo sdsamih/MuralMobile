@@ -93,14 +93,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textViewTopComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="fulano disse: exemplo de comentário"
-        android:textSize="14sp" />
-
-    <TextView
         android:id="@+id/textViewDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +40,16 @@ public class ExpandCommentsDialog extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         CommentAdapter adapter = new CommentAdapter(commentList);
         recyclerView.setAdapter(adapter);
+
+        EditText commentInput = view.findViewById(R.id.comment_input);
+        ImageButton sendCommentButton = view.findViewById(R.id.send_comment_button);
+
+        sendCommentButton.setOnClickListener(v -> {
+            String commentText = commentInput.getText().toString();
+            if (!commentText.isEmpty()) {
+                Toast.makeText(getContext(), commentText, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }

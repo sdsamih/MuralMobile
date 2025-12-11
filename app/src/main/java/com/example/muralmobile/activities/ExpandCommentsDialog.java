@@ -11,15 +11,34 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.muralmobile.R;
+import com.example.muralmobile.adapters.CommentAdapter;
+import com.example.muralmobile.models.Comment;
+
+import java.util.List;
 
 public class ExpandCommentsDialog extends DialogFragment {
+
+    private List<Comment> commentList;
+
+    public ExpandCommentsDialog(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_expand_comments, container, false);
+        View view = inflater.inflate(R.layout.dialog_expand_comments, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.comments_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        CommentAdapter adapter = new CommentAdapter(commentList);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 
     @Override

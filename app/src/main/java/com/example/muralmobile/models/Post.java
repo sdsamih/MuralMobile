@@ -11,6 +11,7 @@ public class Post {
     private String userId;
     private List<Midia> Media;
     private List<Like> likes;
+    private List<Comment> comments;
     private User user;
     private Count _count;
     private boolean isLiked;
@@ -18,14 +19,15 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "id='" + id + '\'' +
-                ", caption='" + caption + '\'' +
+                "id='" + id +
+                ", caption='" + caption +
                 ", _public=" + _public +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", userId='" + userId + '\'' +
+                ", createdAt='" + createdAt +
+                ", updatedAt='" + updatedAt +
+                ", userId='" + userId +
                 ", Media=" + Media +
                 ", likes=" + likes +
+                ", comments=" + comments +
                 ", user=" + user +
                 ", _count=" + _count +
                 ", isLiked=" + isLiked +
@@ -40,6 +42,7 @@ public class Post {
     public String getUserId() { return userId; }
     public List<Midia> getMidia() { return Media; }
     public List<Like> getLikesArr() { return likes; }
+    public List<Comment> getComments() { return comments; }
     public int getLikes() { return _count.getLikes(); }
     public User getUser() { return user; }
     public Count getCount() { return _count; }

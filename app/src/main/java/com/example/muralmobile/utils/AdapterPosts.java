@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.muralmobile.R;
 import com.example.muralmobile.activities.ExpandCommentsDialog;
 import com.example.muralmobile.activities.LoginActivity;
+import com.example.muralmobile.models.Comment;
 import com.example.muralmobile.models.Like;
 import com.example.muralmobile.models.Post;
 import com.example.muralmobile.services.ApiService;
@@ -27,6 +28,7 @@ import com.example.muralmobile.services.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,8 +83,6 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                 .into(holder.userImageProfile);
 
         SessionManager sessionManager = new SessionManager(context);
-        String token = sessionManager.getToken();
-        String bearerToken = "Bearer " + token;
         ApiService api = RetrofitClient.getClient().create(ApiService.class);
 
         if (sessionManager.isLoggedIn()) {
@@ -114,6 +114,8 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                     popup.setOnMenuItemClickListener(item -> {
                         int itemId = item.getItemId();
                         if (itemId == R.id.action_delete) {
+                            String token = sessionManager.getToken();
+                            String bearerToken = "Bearer " + token;
                             Call<Void> deleteCall = api.deletePost(post.getId(), bearerToken);
                             deleteCall.enqueue(new Callback<Void>() {
                                 @Override
@@ -156,6 +158,9 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
                 return;
             }
 
+            String token = sessionManager.getToken();
+            String bearerToken = "Bearer " + token;
+
             if (post.isLiked()) {
                 post.setLiked(false);
                 post.getCount().setLikes(post.getCount().getLikes() - 1);
@@ -187,8 +192,46 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         holder.imageButtonComments.setOnClickListener(v -> {
             if (context instanceof AppCompatActivity) {
                 AppCompatActivity activity = (AppCompatActivity) context;
-                ExpandCommentsDialog dialog = new ExpandCommentsDialog();
-                dialog.show(activity.getSupportFragmentManager(), "expand_comments_dialog");
+
+                String token = sessionManager.getToken();
+                if (!sessionManager.isLoggedIn()) {
+                    Toast.makeText(context, "Faça login para ver os comentários", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    return;
+                }
+                String bearerToken = "Bearer " + token;
+
+                Call<ArrayList<Comment>> call = api.getComments(post.getId(), bearerToken);
+
+                Log.d("AdapterPosts", "Request URL: " + call.request().url());
+                Log.d("AdapterPosts", "Authorization Header: " + call.request().header("Authorization"));
+
+                call.enqueue(new Callback<ArrayList<Comment>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
+                        Log.d("AdapterPosts", "Response Code: " + response.code());
+                        if (response.isSuccessful()) {
+                            ArrayList<Comment> comments = response.body();
+                            Log.d("AdapterPosts", "Response Body: " + new com.google.gson.Gson().toJson(comments));
+                            ExpandCommentsDialog dialog = new ExpandCommentsDialog(comments);
+                            dialog.show(activity.getSupportFragmentManager(), "expand_comments_dialog");
+                        } else {
+                            try {
+                                Log.e("AdapterPosts", "Error Body: " + response.errorBody().string());
+                            } catch (java.io.IOException e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(context, "Failed to load comments", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
+                        Log.e("AdapterPosts", "onFailure: ", t);
+                        Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

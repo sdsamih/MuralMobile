@@ -39,7 +39,10 @@ public interface ApiService {
     Call<User> getUserById(@Path("id") String userId);
 
     @GET("posts/{id}/comments")
-    Call<ArrayList<Comment>> getComments(@Path("id")String postId);
+    Call<ArrayList<Comment>> getComments(
+            @Path("id")String postId,
+            @Header("Authorization") String bearerToken
+    );
 
     @POST("posts/{id}/like")
     Call<Like> likePost(

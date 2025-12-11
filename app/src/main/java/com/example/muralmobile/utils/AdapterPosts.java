@@ -189,52 +189,47 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             holder.TVlikes.setText(String.valueOf(post.getLikes()));
         });
 
-        holder.imageButtonComments.setOnClickListener(v -> {
-            if (context instanceof AppCompatActivity) {
-                AppCompatActivity activity = (AppCompatActivity) context;
+        holder.imageButtonComments.setOnClickListener(v -> showCommentsDialog(post));
 
-                String token = sessionManager.getToken();
-                if (!sessionManager.isLoggedIn()) {
-                    Toast.makeText(context, "Faça login para ver os comentários", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
-                    return;
-                }
-                String bearerToken = "Bearer " + token;
+    }
 
-                Call<ArrayList<Comment>> call = api.getComments(post.getId(), bearerToken);
+    private void showCommentsDialog(Post post) {
+        if (context instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) context;
+            SessionManager sessionManager = new SessionManager(context);
+            ApiService api = RetrofitClient.getClient().create(ApiService.class);
 
-                Log.d("AdapterPosts", "Request URL: " + call.request().url());
-                Log.d("AdapterPosts", "Authorization Header: " + call.request().header("Authorization"));
-
-                call.enqueue(new Callback<ArrayList<Comment>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
-                        Log.d("AdapterPosts", "Response Code: " + response.code());
-                        if (response.isSuccessful()) {
-                            ArrayList<Comment> comments = response.body();
-                            Log.d("AdapterPosts", "Response Body: " + new com.google.gson.Gson().toJson(comments));
-                            ExpandCommentsDialog dialog = new ExpandCommentsDialog(comments);
-                            dialog.show(activity.getSupportFragmentManager(), "expand_comments_dialog");
-                        } else {
-                            try {
-                                Log.e("AdapterPosts", "Error Body: " + response.errorBody().string());
-                            } catch (java.io.IOException e) {
-                                e.printStackTrace();
-                            }
-                            Toast.makeText(context, "Failed to load comments", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
-                        Log.e("AdapterPosts", "onFailure: ", t);
-                        Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            if (!sessionManager.isLoggedIn()) {
+                Toast.makeText(context, "Faça login para ver os comentários", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+                return;
             }
-        });
 
+            String token = sessionManager.getToken();
+            String bearerToken = "Bearer " + token;
+
+            Call<ArrayList<Comment>> call = api.getComments(post.getId(), bearerToken);
+
+            call.enqueue(new Callback<ArrayList<Comment>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
+                    if (response.isSuccessful()) {
+                        ArrayList<Comment> comments = response.body();
+                        ExpandCommentsDialog dialog = new ExpandCommentsDialog(comments, post.getId());
+                        dialog.setOnCommentPostedListener(() -> showCommentsDialog(post));
+                        dialog.show(activity.getSupportFragmentManager(), "expand_comments_dialog");
+                    } else {
+                        Toast.makeText(context, "Failed to load comments", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
+                    Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.muralmobile.R;
 import com.example.muralmobile.models.Comment;
+import com.example.muralmobile.models.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,10 +34,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         Comment comment = commentList.get(position);
-        holder.userName.setText(comment.getUser().getName());
         holder.commentContent.setText(comment.getContent());
 
-        String avatarUrl = comment.getUser().getAvatarUrl();
+        User user = comment.getUser();
+        holder.userName.setText(user.getName());
+
+        String avatarUrl = user.getAvatarUrl();
 
         Picasso.get()
                 .load(avatarUrl)

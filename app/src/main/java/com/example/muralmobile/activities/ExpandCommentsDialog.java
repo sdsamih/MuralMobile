@@ -1,8 +1,10 @@
 package com.example.muralmobile.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +22,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.muralmobile.R;
 import com.example.muralmobile.adapters.CommentAdapter;
 import com.example.muralmobile.models.Comment;
+import com.example.muralmobile.services.ApiService;
+import com.example.muralmobile.services.RetrofitClient;
+import com.example.muralmobile.utils.SessionManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ExpandCommentsDialog extends DialogFragment {
 
     private List<Comment> commentList;
+    private String postId;
+    private OnCommentPostedListener onCommentPostedListener;
 
-    public ExpandCommentsDialog(List<Comment> commentList) {
+    public interface OnCommentPostedListener {
+        void onCommentPosted();
+    }
+
+    public void setOnCommentPostedListener(OnCommentPostedListener listener) {
+        this.onCommentPostedListener = listener;
+    }
+
+    public ExpandCommentsDialog(List<Comment> commentList, String postId) {
         this.commentList = commentList;
+        this.postId = postId;
     }
 
     @Nullable
@@ -47,7 +69,35 @@ public class ExpandCommentsDialog extends DialogFragment {
         sendCommentButton.setOnClickListener(v -> {
             String commentText = commentInput.getText().toString();
             if (!commentText.isEmpty()) {
-                Toast.makeText(getContext(), commentText, Toast.LENGTH_SHORT).show();
+                SessionManager sessionManager = new SessionManager(getContext());
+                ApiService api = RetrofitClient.getClient().create(ApiService.class);
+                String token = sessionManager.getToken();
+                String bearerToken = "Bearer " + token;
+
+                Map<String, String> content = new HashMap<>();
+                content.put("content", commentText);
+
+                Call<Comment> call = api.createComment(postId, bearerToken, content);
+
+                call.enqueue(new Callback<Comment>() {
+                    @Override
+                    public void onResponse(Call<Comment> call, Response<Comment> response) {
+                        if (response.isSuccessful()) {
+                            if (onCommentPostedListener != null) {
+                                onCommentPostedListener.onCommentPosted();
+                            }
+                            dismiss();
+                            Toast.makeText(getContext(), "Comentário adicionado", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Falha ao adicionar comentário", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Comment> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

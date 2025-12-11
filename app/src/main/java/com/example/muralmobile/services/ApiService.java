@@ -79,4 +79,12 @@ public interface ApiService {
     @POST("users")
     Call<User> createUser(@Body Map<String, String> userRequest);
 
+    @Headers("Content-Type: application/json")
+    @POST("posts/{id}/comments")
+    Call<Comment> createComment(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken,
+            @Body Map<String, String> content
+    );
+
 }

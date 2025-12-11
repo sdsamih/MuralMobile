@@ -8,6 +8,7 @@ import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -38,7 +39,10 @@ public interface ApiService {
     Call<User> getUserById(@Path("id") String userId);
 
     @GET("posts/{id}/comments")
-    Call<ArrayList<Comment>> getComments(@Path("id")String postId);
+    Call<ArrayList<Comment>> getComments(
+            @Path("id")String postId,
+            @Header("Authorization") String bearerToken
+    );
 
     @POST("posts/{id}/like")
     Call<Like> likePost(
@@ -63,6 +67,24 @@ public interface ApiService {
             @Part("caption") RequestBody caption,
             @Part("public") RequestBody isPublic,
             @Part MultipartBody.Part media
+    );
+
+    @DELETE("posts/{id}")
+    Call<Void> deletePost(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken
+    );
+
+    @Headers("Content-Type: application/json")
+    @POST("users")
+    Call<User> createUser(@Body Map<String, String> userRequest);
+
+    @Headers("Content-Type: application/json")
+    @POST("posts/{id}/comments")
+    Call<Comment> createComment(
+            @Path("id") String postId,
+            @Header("Authorization") String bearerToken,
+            @Body Map<String, String> content
     );
 
 }

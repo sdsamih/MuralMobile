@@ -3,6 +3,7 @@ package com.example.muralmobile;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +52,9 @@ public class ProfileFragment extends Fragment {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
+    private TextView toolBar_profile;
+    private boolean isHeaderCollapsed = false;
+
 
     private String userId;
 
@@ -67,7 +72,6 @@ public class ProfileFragment extends Fragment {
 
         tvUsername = view.findViewById(R.id.tv_username);
         tvPostsCount = view.findViewById(R.id.tv_posts_count);
-
         // AQUI: ID correto do XML!
         recyclerView = view.findViewById(R.id.recycler_view_profile_posts_fragment);
 
@@ -96,6 +100,14 @@ public class ProfileFragment extends Fragment {
         profile_header = view.findViewById(R.id.profile_header);
         profilePic = view.findViewById(R.id.profile_image);
         setUserPic();
+//        LinearLayout header = view.findViewById(R.id.profile_header);
+        View header = view.findViewById(R.id.profile_header);
+        // guarda a altura original
+        header.post(() -> {
+            header.setTag(header.getHeight());
+        });
+
+
         // Scroll infinito
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -106,12 +118,14 @@ public class ProfileFragment extends Fragment {
                 int total = layoutManager.getItemCount();
                 int firstVisible = layoutManager.findFirstVisibleItemPosition();
 
-                if(dy > 0){
-                    profile_header.setVisibility(GONE);
+                if (dy > 15) {
+                    collapseHeader(header);
                 }
-                else if (dy < 0){
-                    profile_header.setVisibility(VISIBLE);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+                    expandHeader(header);
                 }
+
 
                 if (!isLoading && !isLastPage) {
                     if (visible + firstVisible >= total - 3 && firstVisible >= 0) {
@@ -141,13 +155,13 @@ public class ProfileFragment extends Fragment {
                         return;
                     }
 
-                    List<Post> filtered = new ArrayList<>();
-                    for (Post p : newPosts) {
-                        if (p.getUserId().equals(userId)) filtered.add(p);
-                    }
+//                    List<Post> filtered = new ArrayList<>();
+//                    for (Post p : newPosts) {
+//                        if (p.getUserId().equals(userId)) filtered.add(p);
+//                    }
 
-                    posts.addAll(filtered);
-//                    posts.addAll(newPosts);
+//                    posts.addAll(filtered);
+                    posts.addAll(newPosts);
                     adapterPosts.notifyDataSetChanged();
 
                     tvPostsCount.setText(String.valueOf(posts.size()));
@@ -193,4 +207,48 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
+    private void collapseHeader(View header) {
+        if (isHeaderCollapsed) return;
+        isHeaderCollapsed = true;
+
+        int startHeight = header.getHeight();
+
+        ValueAnimator animator = ValueAnimator.ofInt(startHeight, 0);
+        animator.setDuration(200);
+
+        animator.addUpdateListener(animation -> {
+            int value = (int) animation.getAnimatedValue();
+            ViewGroup.LayoutParams params = header.getLayoutParams();
+            params.height = value;
+            header.setLayoutParams(params);
+            header.setAlpha(value / (float) startHeight);
+        });
+
+        animator.start();
+    }
+
+
+    private void expandHeader(View header) {
+        if (!isHeaderCollapsed) return;
+        isHeaderCollapsed = false;
+
+        int targetHeight = (int) header.getTag();
+
+        ValueAnimator animator = ValueAnimator.ofInt(header.getHeight(), targetHeight);
+        animator.setDuration(200);
+
+        animator.addUpdateListener(animation -> {
+            int value = (int) animation.getAnimatedValue();
+            ViewGroup.LayoutParams params = header.getLayoutParams();
+            params.height = value;
+            header.setLayoutParams(params);
+            header.setAlpha(value / (float) targetHeight);
+        });
+
+        animator.start();
+    }
+
+
+
 }

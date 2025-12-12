@@ -76,6 +76,8 @@ public class ProfileFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_profile_posts_fragment);
 
         SessionManager sessionManager = new SessionManager(requireContext());
+        toolBar_profile = view.findViewById(R.id.toolbar_title);
+        toolBar_profile.setText(sessionManager.getUserName());
 
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Faça login", Toast.LENGTH_SHORT).show();

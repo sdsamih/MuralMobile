@@ -1,10 +1,15 @@
 package com.example.muralmobile;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.muralmobile.models.Post;
 import com.example.muralmobile.models.PostResponse;
+import com.example.muralmobile.models.User;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
 import com.example.muralmobile.utils.AdapterPosts;
 import com.example.muralmobile.utils.SessionManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +45,8 @@ public class ProfileFragment extends Fragment {
 
     private ApiService apiService;
 
+    private LinearLayout profile_header;
+    private ImageView profilePic;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
@@ -84,6 +93,9 @@ public class ProfileFragment extends Fragment {
 
         fetchPosts(currentPage, userId);
 
+        profile_header = view.findViewById(R.id.profile_header);
+        profilePic = view.findViewById(R.id.profile_image);
+        setUserPic();
         // Scroll infinito
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -93,6 +105,13 @@ public class ProfileFragment extends Fragment {
                 int visible = layoutManager.getChildCount();
                 int total = layoutManager.getItemCount();
                 int firstVisible = layoutManager.findFirstVisibleItemPosition();
+
+                if(dy > 0){
+                    profile_header.setVisibility(GONE);
+                }
+                else if (dy < 0){
+                    profile_header.setVisibility(VISIBLE);
+                }
 
                 if (!isLoading && !isLastPage) {
                     if (visible + firstVisible >= total - 3 && firstVisible >= 0) {
@@ -128,6 +147,7 @@ public class ProfileFragment extends Fragment {
                     }
 
                     posts.addAll(filtered);
+//                    posts.addAll(newPosts);
                     adapterPosts.notifyDataSetChanged();
 
                     tvPostsCount.setText(String.valueOf(posts.size()));
@@ -141,6 +161,35 @@ public class ProfileFragment extends Fragment {
             public void onFailure(Call<PostResponse> call, Throwable t) {
                 isLoading = false;
                 Log.e("ProfileFragment", "Erro API", t);
+            }
+        });
+    }
+
+    private void setUserPic(){
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<User> call = apiService.getUserById(this.userId);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+//                    User user = new User();
+                    System.out.println("URL: "+response.body().getAvatarUrl());
+//                    Picasso.get().load(response.body().getAvatarUrl()).fit().into(imageView);
+                    String avatarUrl = response.body().getAvatarUrl();
+                    Picasso.get()
+                            .load(avatarUrl)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .fit()
+                            .centerCrop()
+                            .into(profilePic);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
             }
         });
     }

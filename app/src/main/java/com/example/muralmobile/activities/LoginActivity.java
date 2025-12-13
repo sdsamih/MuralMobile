@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.muralmobile.R;
+import com.example.muralmobile.models.User;
 import com.example.muralmobile.models.login.LoginRequest;
 import com.example.muralmobile.models.login.LoginResponse;
 import com.example.muralmobile.services.ApiService;
@@ -76,48 +77,68 @@ public class LoginActivity extends AppCompatActivity {
                 Call<LoginResponse> call = apiService.login(request);
 
                 call.enqueue(new Callback<LoginResponse>() {
+
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        isLoading = false;
-                        button_login.setText("Log in");
-                        button_login.setEnabled(true);
-                        if (response.isSuccessful()) {
-                            SessionManager sessionManager = new SessionManager(LoginActivity.this);
 
+                        if (response.isSuccessful()) {
                             LoginResponse resp = response.body();
 
-                            String name = "Fulano";
-                            String email = resp.getEmail();
-                            String sub = resp.getSub();
                             String token = resp.getAccessToken();
+                            String userId = resp.getSub();
+                            String emailResp = resp.getEmail();
 
-                            sessionManager.saveSession(name,sub,email,token);
+                            apiService.getUserById(userId).enqueue(new Callback<User>() {
+                                @Override
+                                public void onResponse(Call<User> userCall, Response<User> userResponse) {
+                                    isLoading = false;
+                                    button_login.setText("Log in");
+                                    button_login.setEnabled(true);
 
-                            if (resp != null) {
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "No response data received", Toast.LENGTH_SHORT).show();
-                            }
+                                    if (userResponse.isSuccessful() && userResponse.body() != null) {
+                                        String realName = userResponse.body().getName();
+
+                                        Log.d("DEBUG_LOGIN", "Nome vindo da API: " + realName);
+
+                                        SessionManager sessionManager = new SessionManager(LoginActivity.this);
+                                        sessionManager.saveSession(realName, userId, emailResp, token);
+
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Erro ao recuperar nome do usuário", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> userCall, Throwable t) {
+                                    isLoading = false;
+                                    button_login.setText("Log in");
+                                    button_login.setEnabled(true);
+                                    Toast.makeText(LoginActivity.this, "Falha ao buscar dados do usuário", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         } else {
+                            isLoading = false;
+                            button_login.setText("Log in");
+                            button_login.setEnabled(true);
+
                             int code = response.code();
                             switch(code) {
                                 case 404:
                                     Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                                     break;
-                                    
                                 case 401:
-                                    Toast.makeText(LoginActivity.this, "Invalid credentials (wrong password)", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                                     break;
-
                                 default:
                                     Toast.makeText(LoginActivity.this, "Error!", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
                     }
-
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
                         isLoading = false;

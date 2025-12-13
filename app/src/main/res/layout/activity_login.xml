@@ -2,123 +2,120 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
 
-    <!-- Toolbar expansível -->
-
-    <!-- CONTEÚDO SCROLLÁVEL -->
-    <include
-        layout="@layout/title_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/title_app_bar" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- CONTEÚDO EM COLUNA -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_titleLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="Welcome back"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/text_subtitleLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:fontFamily="@font/roboto"
+            android:text="Enter your email and password to access your account."
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_launcher_foreground" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxStrokeColor="@color/blue"
+            app:hintTextColor="@color/black"
+            android:hint="Email">
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="170dp"
-                android:layout_height="72dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_launcher_foreground" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:padding="7dp"
-                app:boxCornerRadiusBottomEnd="15dp"
-                app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxStrokeColor="@color/blue"
-                app:hintTextColor="@color/black">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_loginEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Email"
-                    android:inputType="text|textEmailAddress" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="7dp"
-                app:boxCornerRadiusBottomEnd="15dp"
-                app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxStrokeColor="@color/blue"
-                app:hintTextColor="@color/black">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_loginPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Password"
-                    android:inputType="textPassword" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/button_login"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/blue"
-                android:text="Log in"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/button_forgot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/roboto"
-                android:text="Forgot password?"
-                android:textColor="#000000" />
+                android:inputType="text|textEmailAddress" />
 
-            <Button
-                android:id="@+id/button_create"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxStrokeColor="@color/blue"
+            app:hintTextColor="@color/black"
+            android:hint="Password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_loginPassword"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#00FAF5F5"
-                android:text="Create new account"
-                android:textColor="@color/blue"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:inputType="textPassword" />
 
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/roboto"
+            android:text="Log in"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_forgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="#00FFFFFF"
+            android:fontFamily="@font/roboto"
+            android:text="Forgot password?"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button_create"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#00FAF5F5"
+            android:fontFamily="@font/roboto"
+            android:text="Create new account"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -128,13 +128,13 @@ public class LoginActivity extends AppCompatActivity {
                             int code = response.code();
                             switch(code) {
                                 case 404:
-                                    Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                                     break;
                                 case 401:
-                                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                                     break;
                                 default:
-                                    Toast.makeText(LoginActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Erro!", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                         isLoading = false;
                         button_login.setText("Log in");
                         button_login.setEnabled(true);
-                        Toast.makeText(LoginActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Erro de conexão", Toast.LENGTH_SHORT).show();
                         Log.e("API LOGIN", "Connection failed: " + t.getMessage());
                     }
                 });

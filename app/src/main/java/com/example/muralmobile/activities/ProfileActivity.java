@@ -68,7 +68,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         SessionManager sessionManager = new SessionManager(this);
         if(!sessionManager.isLoggedIn()){
-            Toast.makeText(this, "Faça login", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -116,14 +115,14 @@ public class ProfileActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(ProfileActivity.this, "home", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ProfileActivity.this, "home", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_post) {
                 Intent intent = new Intent(ProfileActivity.this, CreatePostActivity.class);
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_profile) {
-                Toast.makeText(ProfileActivity.this, "perfil", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ProfileActivity.this, "perfil", Toast.LENGTH_SHORT).show();
                 return true;
             }
             return false;

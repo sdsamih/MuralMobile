@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "Bem-vindo " + sessionManager.getUserName(), Toast.LENGTH_SHORT).show();
 
 
         profileFragment = new ProfileFragment();

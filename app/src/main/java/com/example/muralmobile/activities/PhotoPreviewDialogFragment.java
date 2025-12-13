@@ -3,6 +3,7 @@ package com.example.muralmobile.activities;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class PhotoPreviewDialogFragment extends DialogFragment {
             String authToken = sessionManager.getToken();
 
             if (authToken == null) {
-                Toast.makeText(getContext(), "Authentication token not found.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Erro de autenticação", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -95,16 +96,15 @@ public class PhotoPreviewDialogFragment extends DialogFragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Post created successfully!", Toast.LENGTH_SHORT).show();
                         dismiss();
                     } else {
-                        Toast.makeText(getContext(), "Failed to create post.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Erro ao criar post", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("Error", t.getMessage());
                 }
             });
         });

@@ -62,7 +62,7 @@ public class SignUpPasswordActivity extends AppCompatActivity {
             String confirmPassword = inputConfirmPassword.getText().toString();
 
             if (!password.equals(confirmPassword)) {
-                Toast.makeText(SignUpPasswordActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpPasswordActivity.this, "Senhas não conferem", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -102,14 +102,14 @@ public class SignUpPasswordActivity extends AppCompatActivity {
                             errorBody = "Error reading error body";
                         }
                         Log.e(TAG, "Response unsuccessful: " + response.code() + " - " + response.message() + " - " + errorBody);
-                        Toast.makeText(SignUpPasswordActivity.this, "Failed to create user: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpPasswordActivity.this, "Erro ao criar usuário: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
                     Log.e(TAG, "API call failed: ", t);
-                    Toast.makeText(SignUpPasswordActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(SignUpPasswordActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });

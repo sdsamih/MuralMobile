@@ -55,7 +55,7 @@ public class CreatePostActivity extends AppCompatActivity {
                             showPhotoPreviewDialog(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
-                            Toast.makeText(CreatePostActivity.this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Erro ao enviar imagem!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -149,7 +149,7 @@ public class CreatePostActivity extends AppCompatActivity {
             if (allPermissionsGranted()) {
                 startCamera();
             } else {
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permissões não concedidas", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

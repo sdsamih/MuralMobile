@@ -195,8 +195,8 @@ public class ProfileFragment extends Fragment {
                     String avatarUrl = response.body().getAvatarUrl();
                     Picasso.get()
                             .load(avatarUrl)
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_foreground)
+                            .placeholder(R.drawable.userperfil)
+                            .error(R.drawable.userperfil)
                             .fit()
                             .centerCrop()
                             .into(profilePic);

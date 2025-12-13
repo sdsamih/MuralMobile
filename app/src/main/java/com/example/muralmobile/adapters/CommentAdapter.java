@@ -44,7 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Picasso.get()
                 .load(avatarUrl)
                 .placeholder(R.drawable.userperfil)
-                .error(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.userperfil)
                 .fit()
                 .centerCrop()
                 .into(holder.userImage);

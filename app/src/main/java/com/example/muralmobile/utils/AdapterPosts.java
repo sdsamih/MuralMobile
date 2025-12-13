@@ -1,5 +1,6 @@
 package com.example.muralmobile.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Post post = posts.get(position);
 
@@ -66,7 +67,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
 
         Picasso.get()
                 .load(postPictureUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.loading)
                 .error(R.drawable.ic_launcher_foreground)
                 .fit()
                 .centerCrop()
@@ -76,7 +77,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
 
         Picasso.get()
                 .load(avatarUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.userperfil)
                 .error(R.drawable.ic_launcher_foreground)
                 .fit()
                 .centerCrop()

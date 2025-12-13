@@ -17,14 +17,16 @@
         android:id="@+id/caption_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Legenda"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto"
+        android:hint="Legenda" />
 
     <Button
         android:id="@+id/send_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enviar"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto"
+        android:text="Enviar" />
 
 </LinearLayout>

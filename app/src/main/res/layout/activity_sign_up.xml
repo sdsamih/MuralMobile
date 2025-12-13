@@ -24,20 +24,20 @@
                 android:id="@+id/text_titleCreate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/roboto"
-                android:text="Create an account"
+                android:text="Criar Conta"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_subtitleCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto"
-                android:text="To begin creating an account, add your name and email. You can change the name any time."
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp" />
+                android:text="Para criar uma conta, primeiro digite seu Nome, Email e CPF"
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout2"
@@ -110,7 +110,7 @@
                 android:layout_height="55dp"
                 android:backgroundTint="@color/blue"
                 android:fontFamily="@font/roboto"
-                android:text="Next"
+                android:text="Continuar"
                 android:textStyle="bold" />
 
         </LinearLayout>

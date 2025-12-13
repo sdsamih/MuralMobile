@@ -95,7 +95,7 @@ public class ExpandCommentsDialog extends DialogFragment {
 
                     @Override
                     public void onFailure(Call<Comment> call, Throwable t) {
-                        Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("Error", t.getMessage());
                     }
                 });
             }

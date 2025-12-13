@@ -22,20 +22,20 @@
             android:id="@+id/text_titleLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/roboto"
-            android:text="Welcome back"
+            android:text="Bem-Vindo"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_subtitleLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/roboto"
-            android:text="Enter your email and password to access your account."
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp" />
+            android:text="Digite seu Email e senha para acessar"
+            android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -79,7 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:password="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,18 +90,19 @@
             android:layout_height="55dp"
             android:backgroundTint="@color/blue"
             android:fontFamily="@font/roboto"
-            android:text="Log in"
+            android:text="Entrar"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button_forgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
             android:backgroundTint="#00FFFFFF"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
-            android:text="Forgot password?"
+            android:text="Esqueceu a senha?"
             android:textColor="#000000" />
 
         <Button
@@ -110,7 +112,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="#00FAF5F5"
             android:fontFamily="@font/roboto"
-            android:text="Create new account"
+            android:text="Criar conta"
             android:textColor="@color/blue"
             android:textStyle="bold" />
 

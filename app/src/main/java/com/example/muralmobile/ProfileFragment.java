@@ -57,10 +57,6 @@ public class ProfileFragment extends Fragment {
     private TextView toolBar_profile;
     private boolean isHeaderCollapsed = false;
 
-    private boolean isLoading = false;
-    private boolean isLastPage = false;
-    private int currentPage = 1;
-
     private String userId;
 
     public ProfileFragment() {}

@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,6 +57,9 @@ public class ProfileFragment extends Fragment {
     private TextView toolBar_profile;
     private boolean isHeaderCollapsed = false;
 
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage = 1;
 
     private String userId;
 
@@ -72,6 +77,7 @@ public class ProfileFragment extends Fragment {
 
         tvUsername = view.findViewById(R.id.tv_username);
         tvPostsCount = view.findViewById(R.id.tv_posts_count);
+
         // AQUI: ID correto do XML!
         recyclerView = view.findViewById(R.id.recycler_view_profile_posts_fragment);
 
@@ -157,13 +163,12 @@ public class ProfileFragment extends Fragment {
                         return;
                     }
 
-//                    List<Post> filtered = new ArrayList<>();
-//                    for (Post p : newPosts) {
-//                        if (p.getUserId().equals(userId)) filtered.add(p);
-//                    }
+                    List<Post> filtered = new ArrayList<>();
+                    for (Post p : newPosts) {
+                        if (p.getUserId().equals(userId)) filtered.add(p);
+                    }
 
-//                    posts.addAll(filtered);
-                    posts.addAll(newPosts);
+                    posts.addAll(filtered);
                     adapterPosts.notifyDataSetChanged();
 
                     tvPostsCount.setText(String.valueOf(posts.size()));

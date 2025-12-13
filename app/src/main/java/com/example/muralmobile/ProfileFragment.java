@@ -1,10 +1,19 @@
 package com.example.muralmobile;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +26,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.muralmobile.models.Post;
 import com.example.muralmobile.models.PostResponse;
+import com.example.muralmobile.models.User;
 import com.example.muralmobile.services.ApiService;
 import com.example.muralmobile.services.RetrofitClient;
 import com.example.muralmobile.utils.AdapterPosts;
 import com.example.muralmobile.utils.SessionManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +49,13 @@ public class ProfileFragment extends Fragment {
 
     private ApiService apiService;
 
+    private LinearLayout profile_header;
+    private ImageView profilePic;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
+    private TextView toolBar_profile;
+    private boolean isHeaderCollapsed = false;
 
     private String userId;
 
@@ -63,6 +78,8 @@ public class ProfileFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_profile_posts_fragment);
 
         SessionManager sessionManager = new SessionManager(requireContext());
+        toolBar_profile = view.findViewById(R.id.toolbar_title);
+        toolBar_profile.setText(sessionManager.getUserName());
 
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Faça login", Toast.LENGTH_SHORT).show();
@@ -84,6 +101,17 @@ public class ProfileFragment extends Fragment {
 
         fetchPosts(currentPage, userId);
 
+        profile_header = view.findViewById(R.id.profile_header);
+        profilePic = view.findViewById(R.id.profile_image);
+        setUserPic();
+//        LinearLayout header = view.findViewById(R.id.profile_header);
+        View header = view.findViewById(R.id.profile_header);
+        // guarda a altura original
+        header.post(() -> {
+            header.setTag(header.getHeight());
+        });
+
+
         // Scroll infinito
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -93,6 +121,15 @@ public class ProfileFragment extends Fragment {
                 int visible = layoutManager.getChildCount();
                 int total = layoutManager.getItemCount();
                 int firstVisible = layoutManager.findFirstVisibleItemPosition();
+
+                if (dy > 15) {
+                    collapseHeader(header);
+                }
+
+                if (!recyclerView.canScrollVertically(-1)) {
+                    expandHeader(header);
+                }
+
 
                 if (!isLoading && !isLastPage) {
                     if (visible + firstVisible >= total - 3 && firstVisible >= 0) {
@@ -144,4 +181,77 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
+    private void setUserPic(){
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<User> call = apiService.getUserById(this.userId);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+//                    User user = new User();
+                    System.out.println("URL: "+response.body().getAvatarUrl());
+//                    Picasso.get().load(response.body().getAvatarUrl()).fit().into(imageView);
+                    String avatarUrl = response.body().getAvatarUrl();
+                    Picasso.get()
+                            .load(avatarUrl)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .fit()
+                            .centerCrop()
+                            .into(profilePic);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void collapseHeader(View header) {
+        if (isHeaderCollapsed) return;
+        isHeaderCollapsed = true;
+
+        int startHeight = header.getHeight();
+
+        ValueAnimator animator = ValueAnimator.ofInt(startHeight, 0);
+        animator.setDuration(200);
+
+        animator.addUpdateListener(animation -> {
+            int value = (int) animation.getAnimatedValue();
+            ViewGroup.LayoutParams params = header.getLayoutParams();
+            params.height = value;
+            header.setLayoutParams(params);
+            header.setAlpha(value / (float) startHeight);
+        });
+
+        animator.start();
+    }
+
+
+    private void expandHeader(View header) {
+        if (!isHeaderCollapsed) return;
+        isHeaderCollapsed = false;
+
+        int targetHeight = (int) header.getTag();
+
+        ValueAnimator animator = ValueAnimator.ofInt(header.getHeight(), targetHeight);
+        animator.setDuration(200);
+
+        animator.addUpdateListener(animation -> {
+            int value = (int) animation.getAnimatedValue();
+            ViewGroup.LayoutParams params = header.getLayoutParams();
+            params.height = value;
+            header.setLayoutParams(params);
+            header.setAlpha(value / (float) targetHeight);
+        });
+
+        animator.start();
+    }
+
+
+
 }

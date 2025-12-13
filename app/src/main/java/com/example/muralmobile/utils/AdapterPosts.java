@@ -62,13 +62,21 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         holder.TVlikes.setText(String.valueOf(post.getLikes()));
         holder.TVcommentsNumber.setText(String.valueOf(post.getCount().getComments()));
 
+        if (post.getCaption() != null) {
+            holder.TVCaption.setText(post.getCaption());
+            holder.TVCaption.setVisibility(View.VISIBLE);
+        } else {
+            holder.TVCaption.setText("");
+            holder.TVCaption.setVisibility(View.GONE);
+        }
+
         String postPictureUrl =
                 post.getMidia().get(0).getImageUrl();
 
         Picasso.get()
                 .load(postPictureUrl)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.ic_launcher_foreground)
+                .placeholder(R.drawable.postloading)
+                .error(R.drawable.errorimage)
                 .fit()
                 .centerCrop()
                 .into(holder.postImage);
@@ -78,7 +86,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         Picasso.get()
                 .load(avatarUrl)
                 .placeholder(R.drawable.userperfil)
-                .error(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.userperfil)
                 .fit()
                 .centerCrop()
                 .into(holder.userImageProfile);
@@ -249,6 +257,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
         private ImageButton imageButtonLike;
         private ImageButton imageButtonComments;
         private ImageButton buttonMenu;
+        private TextView TVCaption;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -261,6 +270,7 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.MyViewHolder
             imageButtonLike = itemView.findViewById(R.id.imageButtonLikes);
             imageButtonComments = itemView.findViewById(R.id.imageButtonComments);
             buttonMenu = itemView.findViewById(R.id.buttonMenu);
+            TVCaption = itemView.findViewById(R.id.textViewDate);
         }
     }
 }

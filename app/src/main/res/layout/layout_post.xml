@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,9 +17,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/imageViewUserProfile"
@@ -35,11 +35,11 @@
             android:id="@+id/textViewUserProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/cardPhoto"
             android:layout_centerVertical="true"
-            android:text="Usuário"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+            android:layout_toEndOf="@id/cardPhoto"
+            android:text="User"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/buttonMenu"
@@ -67,9 +67,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
         android:gravity="center_vertical"
-        android:layout_marginTop="4dp">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <ImageButton
             android:id="@+id/imageButtonLikes"
@@ -83,33 +84,35 @@
             android:id="@+id/textViewLikes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:layout_marginStart="4dp" />
+            android:layout_marginStart="4dp"
+            android:text="0" />
 
         <ImageButton
             android:id="@+id/imageButtonComments"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:scaleType="fitCenter"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/chat" />
 
         <TextView
             android:id="@+id/textViewCommentsN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:layout_marginStart="4dp" />
+            android:layout_marginStart="4dp"
+            android:text="0" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textViewDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="há x tempo"
-        android:textSize="12sp"
-        android:textColor="#888"
-        android:layout_marginTop="2dp" />
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:text="Caption"
+        android:textColor="#000000"
+        android:textSize="14sp" />
 
 </LinearLayout>

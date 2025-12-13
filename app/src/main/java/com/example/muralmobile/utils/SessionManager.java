@@ -6,8 +6,15 @@ import android.content.SharedPreferences;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.example.muralmobile.models.User;
+import com.example.muralmobile.services.ApiService;
+import com.example.muralmobile.services.RetrofitClient;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class SessionManager {
 
@@ -19,8 +26,10 @@ public class SessionManager {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private Context context;
 
     public SessionManager(Context context) {
+        this.context = context;
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
 
@@ -68,6 +77,28 @@ public class SessionManager {
         return getUserId() != null;
     }
 
+
+    public boolean isUserInvalid() {
+        String userId = getUserId();
+        if (userId == null) {
+            return true;
+        }
+
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<User> call = apiService.getUserById(userId);
+
+        try {
+            Response<User> response = call.execute();
+            if (!response.isSuccessful() && response.code() == 404) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return true;
+        }
+
+        return false;
+    }
 
     public void clearSession() {
         editor.clear();
